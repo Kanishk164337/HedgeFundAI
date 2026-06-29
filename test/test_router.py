@@ -6,10 +6,8 @@ print("========== STOCK ==========\n")
 
 stock = router.get_data("AAPL")
 
-print("Company:", stock["Name"])
-print("Sector:", stock["Sector"])
-print("Industry:", stock["Industry"])
-print("Market Cap:", stock["MarketCapitalization"])
+print(stock["Name"])
+print(stock["Sector"])
 
 print("\n========== CRYPTO ==========\n")
 
