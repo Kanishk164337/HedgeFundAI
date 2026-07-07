@@ -1,3 +1,8 @@
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 from market.alpha_vantage import AlphaVantageClient
 from indicators.trend import TrendIndicators
 
@@ -12,7 +17,6 @@ print(df.tail())
 print("\nCalculating Trend Indicators...\n")
 
 trend = TrendIndicators(df)
-
 result = trend.calculate()
 
 print(
