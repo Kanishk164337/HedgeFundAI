@@ -4,14 +4,14 @@ from ta.trend import EMAIndicator, SMAIndicator, ADXIndicator
 
 class TrendIndicators:
 
-    def __init__(self, data: pd.DataFrame):
-        self.data = data.copy()
+    def calculate(self, df: pd.DataFrame):
 
-    def calculate(self):
+        df = df.copy()
 
-        df = self.data
-
+        # ==========================
         # EMA
+        # ==========================
+
         df["EMA20"] = EMAIndicator(
             close=df["Close"],
             window=20
@@ -27,7 +27,10 @@ class TrendIndicators:
             window=200
         ).ema_indicator()
 
+        # ==========================
         # SMA
+        # ==========================
+
         df["SMA20"] = SMAIndicator(
             close=df["Close"],
             window=20
@@ -38,7 +41,10 @@ class TrendIndicators:
             window=50
         ).sma_indicator()
 
+        # ==========================
         # ADX
+        # ==========================
+
         adx = ADXIndicator(
             high=df["High"],
             low=df["Low"],

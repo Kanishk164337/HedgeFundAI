@@ -16,12 +16,12 @@ print(df.tail())
 
 print("\nCalculating Momentum Indicators...\n")
 
-momentum = MomentumIndicators(df)
+momentum = MomentumIndicators()
 
-result = momentum.calculate()
+df = momentum.calculate(df)
 
 print(
-    result[
+    df[
         [
             "Close",
             "RSI",
@@ -31,7 +31,7 @@ print(
             "STOCH_K",
             "STOCH_D",
             "CCI",
-            "ROC"
+            "ROC",
         ]
     ].tail()
 )

@@ -14,12 +14,9 @@ from ta.trend import (
 
 class MomentumIndicators:
 
-    def __init__(self, data: pd.DataFrame):
-        self.data = data.copy()
+    def calculate(self, df: pd.DataFrame):
 
-    def calculate(self):
-
-        df = self.data
+        df = df.copy()
 
         # ==========================
         # RSI
