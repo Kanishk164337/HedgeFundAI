@@ -1,27 +1,42 @@
 from market.alpha_vantage import AlphaVantageClient
-from market.binance import BinanceClient
+from market.yahoo_finance import YahooFinanceClient
 
 
 class MarketRouter:
 
     def __init__(self):
+
         self.alpha = AlphaVantageClient()
-        self.binance = BinanceClient()
+        self.yahoo = YahooFinanceClient()
 
     def get_data(self, symbol: str):
 
         symbol = symbol.upper()
 
-        crypto_suffixes = (
-            "USDT",
-            "BTC",
-            "ETH",
-            "BNB",
-            "FDUSD",
-            "USDC",
-        )
+        # Indian Stocks
+        if symbol.endswith(".NS") or symbol.endswith(".BO"):
 
-        if symbol.endswith(crypto_suffixes):
-            return self.binance.get_24hr_stats(symbol)
+            print("Using Yahoo Finance (Indian Stock)")
+            return self.yahoo.get_daily_data(symbol)
 
-        return self.alpha.get_company_overview(symbol)
+        # Commodities
+        if symbol.endswith("=F"):
+
+            print("Using Yahoo Finance (Commodity)")
+            return self.yahoo.get_daily_data(symbol)
+
+        # Crypto
+        if symbol.endswith("-USD"):
+
+            print("Using Yahoo Finance (Crypto)")
+            return self.yahoo.get_daily_data(symbol)
+
+        # Index
+        if symbol.startswith("^"):
+
+            print("Using Yahoo Finance (Index)")
+            return self.yahoo.get_daily_data(symbol)
+
+        # Default US Stock
+        print("Using Alpha Vantage (US Stock)")
+        return self.alpha.get_daily_data(symbol)

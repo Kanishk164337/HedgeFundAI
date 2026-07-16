@@ -1,20 +1,19 @@
-from market.market_router import MarketRouter
+from core.pipeline import HedgeFundPipeline
 
-router = MarketRouter()
 
-print("========== STOCK ==========\n")
+def main():
 
-stock = router.get_data("AAPL")
+    symbol = input("Enter Stock Symbol: ")
 
-print("Company:", stock["Name"])
-print("Sector:", stock["Sector"])
-print("Industry:", stock["Industry"])
-print("Market Cap:", stock["MarketCapitalization"])
+    pipeline = HedgeFundPipeline()
 
-print("\n========== CRYPTO ==========\n")
+    result = pipeline.analyze(symbol)
 
-crypto = router.get_data("BTCUSDT")
+    print("\n")
+    print("=" * 80)
+    print(result["report"])
+    print("=" * 80)
 
-print("Symbol:", crypto["symbol"])
-print("Price:", crypto["lastPrice"])
-print("24h Change:", crypto["priceChangePercent"] + "%")
+
+if __name__ == "__main__":
+    main()
