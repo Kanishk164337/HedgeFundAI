@@ -7,6 +7,7 @@ import streamlit as st
 
 from core.pipeline import HedgeFundPipeline
 from charts.candlestick_chart import CandlestickChart
+from portfolio.portfolio_engine import PortfolioEngine
 
 st.set_page_config(
     page_title="HedgeFundAI",
@@ -16,22 +17,62 @@ st.set_page_config(
 
 st.title("📈 HedgeFundAI")
 st.caption("AI-Powered Investment Research Platform")
-
-symbol = st.text_input(
-    "Enter Stock Symbol",
-    value="AAPL"
+mode = st.radio(
+    "Choose Analysis Mode",
+    [
+        "Single Stock",
+        "Portfolio"
+    ],
+    horizontal=True
 )
+if mode == "Single Stock":
 
+    symbol = st.text_input(
+        "Enter Stock Symbol",
+        value="AAPL"
+    )
+
+else:
+
+    portfolio_input = st.text_area(
+        "Enter Symbols (comma separated)",
+        value="AAPL,MSFT,NVDA"
+    )
 if st.button("Analyze"):
 
-    with st.spinner("Analyzing..."):
+    if mode == "Single Stock":
 
-        pipeline = HedgeFundPipeline()
-        result = pipeline.analyze(symbol)
+        with st.spinner("Analyzing Stock..."):
 
-    analysis = result["analysis"]
+            pipeline = HedgeFundPipeline()
+            result = pipeline.analyze(symbol)
 
-    # ==========================
+        analysis = result["analysis"]
+
+    else:
+
+        with st.spinner("Analyzing Portfolio..."):
+
+            engine = PortfolioEngine()
+
+            symbols = [
+                s.strip().upper()
+                for s in portfolio_input.split(",")
+                if s.strip()
+            ]
+
+            portfolio_results = engine.analyze(symbols)
+
+            st.success("✅ Portfolio Analysis Complete")
+
+            st.subheader("🏆 Portfolio Ranking")
+
+            st.dataframe(
+               portfolio_results,
+               use_container_width=True
+             )
+
+            st.stop()    # ==========================
     # Signal
     # ==========================
 
